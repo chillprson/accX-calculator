@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { fetchTwitterProfile } from '../utils/twitter';
+import { estimateValue } from '../utils/valuation';
+
+const username = Astro.url.searchParams.get('username');
+const type = Astro.url.searchParams.get('type');
+const isSuspicious = Astro.url.searchParams.has('suspicious');
+const token = import.meta.env.TWITTER_BEARER;
+
+let user, price;
+try {
+  user = await fetchTwitterProfile(username, token);
+  price = estimateValue(user.createdAt.getFullYear(), user.followers, user.tweets, type, isSuspicious);
+} catch (err) {
+  user = null;
+}
+---
+
+<Layout>
+  {user ? (
+    <>
+      <h2>{user.name}</h2>
+      <img src={user.avatar} alt="avatar" width="80">
+      <p>ID: {user.id}</p>
+      <p>Followers: {user.followers.toLocaleString()}</p>
+      <p>Tweet: {user.tweets.toLocaleString()}</p>
+      <p>Dibuat: {user.createdAt.toLocaleDateString('id-ID')}</p>
+      <h3>Estimasi Harga: Rp {price.toLocaleString('id-ID')}</h3>
+      <button onclick="window.print()">Export sebagai PDF</button>
+    </>
+  ) : <p>Data tidak ditemukan atau gagal ambil data akun.</p>}
+</Layout>

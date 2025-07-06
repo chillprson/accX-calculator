@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <h1>Unem Calculator</h1>
+  <form action="/result" method="get">
+    <input type="text" name="username" placeholder="Masukkan username tanpa @" required>
+    <select name="type">
+      <option>JFB < 4.999 Followers</option>
+      <option>JFB 5000 - 10.000 Followers</option>
+      <option>JFB >10.000 Followers</option>
+      <option>SELFFOL</option>
+      <option>INACT < 999 Followers</option>
+      <option>INACT 1000 - 3.999 Followers</option>
+      <option>INACT >4.000 Followers</option>
+    </select>
+    <label><input type="checkbox" name="suspicious"> Akun mencurigakan / bot</label>
+    <button type="submit">Cek Sekarang</button>
+  </form>
+</Layout>
